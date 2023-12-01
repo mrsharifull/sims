@@ -17848,8 +17848,8 @@ Copyright (c) 2015 Daniel Eden
 .card-register .card-img {
   position: absolute;
   left: 0;
-  top: -15%;
-  width: 70%;
+  top: 0;
+  width: 90%;
 }
 
 .full-page.register-page .info-horizontal {
