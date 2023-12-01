@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 
 use App\Http\Controllers\Backend\UserManagementController;
@@ -48,16 +49,24 @@ Route::group(['middleware' => 'auth'], function () {
 //================================================//
 //                   Custom Routes                //
 //================================================//
-Route::group(['middleware' => 'auth'], function () { 
+Route::group(['middleware' => ['auth', 'permission']], function () {
+
+	Route::get('/export-permissions', function () {
+		$filename = 'permissions.csv';
+		$filePath = createCSV($filename);
+	
+		return Response::download($filePath, $filename);
+	})->name('export.permissions');
 
 	Route::group(['as' => 'um.', 'prefix' => 'user-management'], function () {
 		Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
-			Route::get('index', [UserManagementController::class, 'index'])->name('index');
-			Route::get('create', [UserManagementController::class, 'create'])->name('create');
-			Route::post('create', [UserManagementController::class, 'store'])->name('create');
-			Route::get('edit/{id}', [UserManagementController::class, 'edit'])->name('edit');
-			Route::put('edit/{id}', [UserManagementController::class, 'update'])->name('edit');
-			Route::get('delete/{id}', [UserManagementController::class, 'delete'])->name('delete');
+			Route::get('index', [UserManagementController::class, 'index'])->name('user_list');
+			Route::get('create', [UserManagementController::class, 'create'])->name('user_create');
+			Route::post('create', [UserManagementController::class, 'store'])->name('user_create');
+			Route::get('edit/{id}', [UserManagementController::class, 'edit'])->name('user_edit');
+			Route::put('edit/{id}', [UserManagementController::class, 'update'])->name('user_edit');
+			Route::get('status/{id}', [UserManagementController::class, 'status'])->name('status.user_edit');
+			Route::get('delete/{id}', [UserManagementController::class, 'delete'])->name('user_delete');
 		});
 
 	});
