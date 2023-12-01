@@ -45,7 +45,7 @@
                      " id="um">
                     <ul class="nav pl-4">
                         <li @if ($pageSlug == 'user') class="active " @endif>
-                            <a href="{{ route('profile.edit')  }}">
+                            <a href="{{ route('um.user.index')  }}">
                                 <i class="fas fa-minus"></i>
                                 <p>{{ _('User') }}</p>
                             </a>
