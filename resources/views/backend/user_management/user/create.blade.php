@@ -10,7 +10,7 @@
                             <h4 class="card-title">{{__('Create User')}}</h4>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{route('um.user.user_list')}}" class="btn btn-sm btn-primary">{{__('Back')}}</a>
+                            @include('backend.partials.button', ['routeName' => 'um.user.user_list', 'className' => 'btn-primary', 'label' => 'Back'])
                         </div>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                   <form  method="POST" action="{{route('um.user.user_create')}}">
                     @csrf
                     <div class="form-group">
-                        
+
                       <label>Name</label>
                       <input type="text" name="name" class="form-control" placeholder="Enter name" value="{{old('name')}}">
                       @include('alerts.feedback', ['field' => 'name'])

@@ -7,25 +7,24 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-8">
-                            <h4 class="card-title">Permission List</h4>
+                            <h4 class="card-title">{{_('Permission List')}}</h4>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{route('export.permissions')}}" class="btn btn-sm btn-primary">{{__('Expoert Permissions')}}</a>
-                            <a href="{{route('um.permission.permission_create')}}" class="btn btn-sm btn-primary">{{__('Add Permission')}}</a>
+                            @include('backend.partials.button', ['routeName' => 'export.permissions', 'className' => 'btn-primary', 'label' => 'Expoert Permissions'])
+                            @include('backend.partials.button', ['routeName' => 'um.permission.permission_create', 'className' => 'btn-primary', 'label' => 'Add Permission'])
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     @include('alerts.success')
                     <div class="">
-                        <table class="table tablesorter " id="">
+                        <table class="table tablesorter datatable">
                             <thead class=" text-primary">
                                 <tr>
                                     <th>{{_('Prefix')}}</th>
                                     <th>{{_('Permisson')}}</th>
                                     <th>{{_('Creation Date')}}</th>
                                     <th>{{_('Creadted By')}}</th>
-                                    <th>{{_('Updated By')}}</th>
                                     <th class="text-center">{{_('Action')}}</th>
                                 </tr>
                             </thead>
@@ -36,7 +35,6 @@
                                     <td>{{$permission->name}}</td>
                                     <td>{{date('d M, Y', strtotime($permission->created_at))}}</td>
                                     <td>{{$permission->createdBy->name ?? "System Generated"}}</td>
-                                    <td>{{$permission->updatedBy->name ?? "System Generated"}}</td>
                                     <td class="text-center">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="javascript:void(0)" role="button"
@@ -52,7 +50,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -65,3 +63,4 @@
         </div>
     </div>
 @endsection
+@include('backend.partials.datatable', ['columns_to_show' => [0,1,2]])

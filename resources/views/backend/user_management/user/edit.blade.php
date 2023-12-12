@@ -10,7 +10,7 @@
                             <h4 class="card-title">{{__('Edit User')}}</h4>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{route('um.user.user_list')}}" class="btn btn-sm btn-primary">{{__('Back')}}</a>
+                            @include('backend.partials.button', ['routeName' => 'um.user.user_list', 'className' => 'btn-primary', 'label' => 'Back'])
                         </div>
                     </div>
                 </div>

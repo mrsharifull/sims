@@ -10,7 +10,7 @@
                             <h4 class="card-title">User List</h4>
                         </div>
                         <div class="col-4 text-right">
-                            <a href="{{route('um.user.user_create')}}" class="btn btn-sm btn-primary">{{__('Add User')}}</a>
+                            @include('backend.partials.button', ['routeName' => 'um.user.user_create', 'className' => 'btn-primary', 'label' => 'Add User'])
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                                         <span class="badge {{$user->status ==1 ? 'badge-success' : 'badge-warning' }}">{{$user->status ==1 ? 'Active' : 'Disabled' }}</span>
                                     </td>
                                     <td>{{date('d M, Y', strtotime($user->created_at))}}</td>
-                                    <td> {{ $user->created_user->name ?? 'system' }} </td>
+                                    <td> {{ $user->createdBy->name ?? 'system' }} </td>
                                     <td>
                                         @include('backend.partials.action_buttons', [
                                             'menuItems' => [
@@ -52,7 +52,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                
+
                             </tbody>
                         </table>
                     </div>

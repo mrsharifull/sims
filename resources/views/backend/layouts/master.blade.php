@@ -7,18 +7,28 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'White Dashboard') }}</title>
+        <title>
+            @yield('title', 'SIMS') - School Information Management System
+        </title>
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('white') }}/img/apple-icon.png">
         <link rel="icon" type="image/png" href="{{ asset('white') }}/img/favicon.png">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <!-- Icons -->
         <link href="{{ asset('white') }}/css/nucleo-icons.css" rel="stylesheet" />
+
+        @stack('css_link')
+
         <!-- CSS -->
         <link href="{{ asset('white') }}/css/white-dashboard.css?v=1.0.0" rel="stylesheet" />
         <link href="{{ asset('white') }}/css/theme.css" rel="stylesheet" />
+
+        {{-- Custom CSS --}}
+        <link rel="stylesheet" href="{{ asset('backend/css/style.css') }}">
+
+        @stack('css')
     </head>
     <body class="white-content {{ $class ?? '' }}">
         @auth()
@@ -67,6 +77,20 @@
                     <div class="clearfix"></div>
                     </a>
                 </li>
+                <li class="button-container">
+                    <a href="https://www.creative-tim.com/product/white-dashboard-laravel" target="_blank" class="btn btn-primary btn-block btn-round">Download Now</a>
+                    <a href="https://white-dashboard-laravel.creative-tim.com/docs/getting-started/laravel-setup.html" target="_blank" class="btn btn-default btn-block btn-round">
+                    Documentation
+                    </a>
+                </li>
+                <li class="header-title">Thank you for 95 shares!</li>
+                <li class="button-container text-center">
+                    <button id="twitter" class="btn btn-round btn-info"><i class="fab fa-twitter"></i> &middot; 45</button>
+                    <button id="facebook" class="btn btn-round btn-info"><i class="fab fa-facebook-f"></i> &middot; 50</button>
+                    <br>
+                    <br>
+                    <a class="github-button" href="https://github.com/creativetimofficial/white-dashboard-laravel" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
+                </li>
                 </ul>
             </div>
         </div>
@@ -85,7 +109,10 @@
         <script src="{{ asset('white') }}/js/white-dashboard.min.js?v=1.0.0"></script>
         <script src="{{ asset('white') }}/js/theme.js"></script>
 
-        @stack('js')
+        @stack('js_link')
+
+        {{-- Custom JS --}}
+        <script src="{{ asset('backend/js/app.js') }}"></script>
 
         <script>
             $(document).ready(function() {

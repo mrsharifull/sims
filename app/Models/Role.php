@@ -10,17 +10,17 @@ class Role extends SpatieRole
 {
     use HasFactory;
 
-    public function created_user()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updated_user()
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function deleted_user()
+    public function deletedBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
