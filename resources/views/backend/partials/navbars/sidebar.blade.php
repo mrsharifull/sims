@@ -40,7 +40,7 @@
                             'menuItems' => [
                                 ['pageSlug' => 'user', 'routeName' => 'um.user.user_list', 'iconClass' => 'fa-solid fa-user-group', 'label' => 'Users'],
                                 ['pageSlug' => 'role', 'routeName' => '', 'iconClass' => 'fa-solid fa-person-circle-check', 'label' => 'Roles'],
-                                ['pageSlug' => 'permission', 'routeName' => '', 'iconClass' => 'fa-solid fa-check-double', 'label' => 'Permission'],
+                                ['pageSlug' => 'permission', 'routeName' => 'um.permission.permission_list', 'iconClass' => 'fa-solid fa-check-double', 'label' => 'Permission'],
                             ]
                         ])
                     </ul>
