@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'register-page', 'page' => _('Register Page'), 'contentClass' => 'register-page'])
+@extends('backend.layouts.master', ['class' => 'register-page', 'page' => _('Register Page'), 'contentClass' => 'register-page'])
 
 @section('content')
     <div class="row">
