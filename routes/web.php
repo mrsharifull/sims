@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 	Route::group(['as' => 'um.', 'prefix' => 'user-management'], function () {
 		Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
 			Route::get('index', [UserManagementController::class, 'index'])->name('user_list');
+			Route::get('details/{id}', [UserManagementController::class, 'details'])->name('details.user_list');
 			Route::get('create', [UserManagementController::class, 'create'])->name('user_create');
 			Route::post('create', [UserManagementController::class, 'store'])->name('user_create');
 			Route::get('edit/{id}', [UserManagementController::class, 'edit'])->name('user_edit');
@@ -71,6 +72,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 		});
 		Route::group(['as' => 'permission.', 'prefix' => 'permission'], function () {
 			Route::get('index', [UserManagementController::class, 'p_index'])->name('permission_list');
+			Route::get('details/{id}', [UserManagementController::class, 'p_details'])->name('details.permission_list');
 			Route::get('create', [UserManagementController::class, 'P_create'])->name('permission_create');
 			Route::post('create', [UserManagementController::class, 'p_store'])->name('permission_create');
 			Route::get('edit/{id}', [UserManagementController::class, 'p_edit'])->name('permission_edit');
@@ -78,6 +80,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 		});
 		Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
 			Route::get('index', [UserManagementController::class, 'r_index'])->name('role_list');
+			Route::get('details/{id}', [UserManagementController::class, 'r_details'])->name('details.role_list');
 			Route::get('create', [UserManagementController::class, 'r_create'])->name('role_create');
 			Route::post('create', [UserManagementController::class, 'r_store'])->name('role_create');
 			Route::get('edit/{id}', [UserManagementController::class, 'r_edit'])->name('role_edit');

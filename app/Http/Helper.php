@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 function get_permission_routes()
 {
   return [
-            'um.',
+            'um.'
         ];
 }
 
@@ -58,6 +58,7 @@ function createCSV($filename = 'permissions.csv'): string
         return [
             'name' => $permission->name,
             'guard_name' => $permission->guard_name,
+            'prefix' => $permission->prefix,
         ];
     });
 

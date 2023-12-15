@@ -13,15 +13,25 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use App\Models\Permission;
-
+use Illuminate\Http\JsonResponse;
 
 class UserManagementController extends Controller
 {
     // User Methods 
     public function index(): View
     {
-        $s['users'] = User::with('role')->where('deleted_at',null)->get();
+        $s['users'] = User::with(['role','createdBy'])->where('deleted_at',null)->get();
         return view('backend.user_management.user.index',$s);
+    }
+    public function details($id): JsonResponse
+    {
+        $user = User::with('role')->where('id',$id)->where('deleted_at',null)->first();
+        $user['created_date'] = date('d M, Y', strtotime($user->created_at));
+        $user['updated_date'] = ($user->updated_at != $user->created_at) ? (date('d M, Y', strtotime($user->updated_at))) : 'N/A';
+        $user['created_user'] = $user->created_by ? $user->createdBy->name : 'System';
+        $user['updated_user'] = $user->updated_by ? $user->updatedBy->name : 'N/A';
+        $s['user'] = $user;
+        return response()->json($s);
     }
     public function create(): View
     {
@@ -33,7 +43,9 @@ class UserManagementController extends Controller
         $user = new User();
         $user->name = $req->name;
         $user->email = $req->email;
+        $user->role_id = $req->role;
         $user->password = Hash::make($req->password);
+        $user->created_by = auth()->user()->id;
         $user->save();
 
         $user->assignRole($user->role->name);
@@ -51,9 +63,11 @@ class UserManagementController extends Controller
         $user = User::findOrFail($id);
         $user->name = $req->name;
         $user->email = $req->email;
+        $user->role_id = $req->role;
         if($req->password){
             $user->password = Hash::make($req->password);
         }
+        $user->updated_by = auth()->user()->id;
         $user->update();
 
         $user->assignRole($user->role->name);
@@ -80,6 +94,16 @@ class UserManagementController extends Controller
      {
         $s['permissions'] = Permission::orderBy('prefix')->get();
         return view('backend.user_management.permission.index',$s);
+    }
+    public function p_details($id): JsonResponse
+    {
+        $permission = Permission::where('id',$id)->where('deleted_at',null)->first();
+        $permission['created_date'] = date('d M, Y', strtotime($permission->created_at));
+        $permission['updated_date'] = ($permission->updated_at != $permission->created_at) ? (date('d M, Y', strtotime($permission->updated_at))) : 'N/A';
+        $permission['created_user'] = $permission->created_by ? $permission->createdBy->name : 'System';
+        $permission['updated_user'] = $permission->updated_by ? $permission->updatedBy->name : 'N/A';
+        $s['permission'] = $permission;
+        return response()->json($s);
     }
     public function p_create(){
         return view('backend.user_management.permission.create');
@@ -122,6 +146,17 @@ class UserManagementController extends Controller
         });
         return view('backend.user_management.role.index', $s);
     }
+    public function r_details($id): JsonResponse
+    {
+        $role = Role::where('id',$id)->where('deleted_at',null)->first();
+        $role['created_date'] = date('d M, Y', strtotime($role->created_at));
+        $role['updated_date'] = ($role->updated_at != $role->created_at) ? (date('d M, Y', strtotime($role->updated_at))) : 'N/A';
+        $role['created_user'] = $role->created_by ? $role->createdBy->name : 'System';
+        $role['updated_user'] = $role->updated_by ? $role->updatedBy->name : 'N/A';
+        $role['permissionNames'] = $role->permissions->pluck('name')->implode(' | ');
+        $s['role'] = $role;
+        return response()->json($s);
+    }
     public function r_create(): View
     {
         $permissions = Permission::orderBy('name')->get();
@@ -148,7 +183,7 @@ class UserManagementController extends Controller
         $s['role'] = Role::findOrFail($id);
         $s['permissions'] = Permission::orderBy('name')->get();
         $s['groupedPermissions'] = $s['permissions']->groupBy(function ($permission) {
-            return explode('_', $permission->name)[0];
+            return $permission->prefix;
         });
         return view('backend.user_management.role.edit',$s);
     }

@@ -32,19 +32,28 @@
                                     <td>{{$role->name}}</td>
                                     <td>{{$role->permissionNames}}</td>
                                     <td>{{date('d M, Y', strtotime($role->created_at))}}</td>
-                                    <td class="text-center">
-                                        <div class="dropdown">
-                                            <a class="btn btn-sm btn-icon-only text-light" href="javascript:void(0)" role="button"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
-                                                x-placement="top-end"
-                                                style="position: absolute; transform: translate3d(-57px, -60px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                <a class="dropdown-item" href="{{route('um.role.role_edit',$role->id)}}">{{_('Update')}}</a>
-                                                <a class="dropdown-item" onclick="alert('Are you sure?')" href="{{route('um.role.role_delete',$role->id)}}">{{_('Delete')}}</a>
-                                            </div>
-                                        </div>
+                                    <td>
+                                        @include('backend.partials.action_buttons', [
+                                                'menuItems' => [
+                                                    [
+                                                        'routeName' => 'javascript:void(0)',
+                                                        'params' => [$role->id],
+                                                        'label' => 'View',
+                                                        'className' => 'view',
+                                                    ],
+                                                    [
+                                                        'routeName' => 'um.role.role_edit',
+                                                        'params' => [$role->id],
+                                                        'label' => 'Update',
+                                                    ],
+                                                    [
+                                                        'routeName' => 'um.role.role_delete',
+                                                        'params' => [$role->id],
+                                                        'label' => 'Delete',
+                                                        'delete' => true,
+                                                    ],
+                                                ],
+                                            ])
                                     </td>
                                 </tr>
                                 @endforeach
@@ -60,5 +69,91 @@
             </div>
         </div>
     </div>
+
+    {{-- Role Details Modal  --}}
+    <div class="modal view_modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ _('Role Details') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body modal_data">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @include('backend.partials.datatable', ['columns_to_show' => [0,1,2,3]])
+@push('js')
+<script>
+$(document).ready(function() {
+    $('.view').on('click', function() {
+        let id = $(this).data('id');
+        let url = ("{{ route('um.role.details.role_list', ['id']) }}");
+        let _url = url.replace('id', id);
+        $.ajax({
+            url: _url,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var result = `
+                        <table class="table tablesorter">
+                            <tr>
+                                <th class="text-nowrap">Name</th>
+                                <th>:</th>
+                                <td>${data.role.name}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">Guard Name</th>
+                                <th>:</th>
+                                <td>${data.role.guard_name}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">Permissions</th>
+                                <th>:</th>
+                                <td>${data.role.permissionNames}</td>
+                            </tr>
+
+                           
+                            <tr>
+                                <th class="text-nowrap">Created By</th>
+                                <th>:</th>
+                                <td>${data.role.created_user}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">Updated By</th>
+                                <th>:</th>
+                                <td>${data.role.updated_user}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">Created At</th>
+                                <th>:</th>
+                                <td>${data.role.created_date}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-nowrap">Updated At</th>
+                                <th>:</th>
+                                <td>${data.role.updated_date}</td>
+                            </tr>
+                        </table>
+                        `;
+                $('.modal_data').html(result);
+                $('.view_modal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching role data:', error);
+            }
+        });
+    });
+});
+</script>
+@endpush

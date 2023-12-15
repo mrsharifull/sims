@@ -5,12 +5,11 @@
             <a href="{{ route('dashboard') }}" class="simple-text logo-normal">{{ _('Dashboard') }}</a>
         </div>
         <ul class="nav">
-            {{-- <li @if ($pageSlug == 'dashboard') class="active " @endif>
-                <a href="{{ route('dashboard') }}">
-                    <i class="tim-icons icon-chart-pie-36"></i>
-                    <p>{{ _('Dashboard') }}</p>
-                </a>
-            </li> --}}
+            @include('backend.partials.menu_buttons', [
+                'menuItems' => [
+                    ['pageSlug' => 'dashboard', 'routeName' => 'dashboard', 'iconClass' => 'fa-solid fa-chart-line', 'label' => 'Dashboard'],
+                    ]
+               ])
 
 
             {{-- User Management --}}
@@ -38,9 +37,9 @@
                     <ul class="nav pl-2">
                         @include('backend.partials.menu_buttons', [
                             'menuItems' => [
-                                ['pageSlug' => 'user', 'routeName' => 'um.user.user_list', 'iconClass' => 'fa-solid fa-user-group', 'label' => 'Users'],
-                                ['pageSlug' => 'role', 'routeName' => 'um.role.role_list', 'iconClass' => 'fa-solid fa-person-circle-check', 'label' => 'Roles'],
-                                ['pageSlug' => 'permission', 'routeName' => 'um.permission.permission_list', 'iconClass' => 'fa-solid fa-check-double', 'label' => 'Permission'],
+                                ['pageSlug' => 'user', 'routeName' => 'um.user.user_list', 'label' => 'Users'],
+                                ['pageSlug' => 'role', 'routeName' => 'um.role.role_list', 'label' => 'Roles'],
+                                ['pageSlug' => 'permission', 'routeName' => 'um.permission.permission_list', 'label' => 'Permission'],
                             ]
                         ])
                     </ul>
